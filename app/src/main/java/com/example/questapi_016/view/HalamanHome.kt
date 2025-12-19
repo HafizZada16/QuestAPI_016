@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -50,7 +49,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -76,10 +75,11 @@ fun HomeScreen(
         HomeBody(
             statusUISiswa = viewModel.listSiswa,
             retryAction = viewModel::loadSiswa,
+            onSiswaClick = navigateToItemUpdate,
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
-            onSiswaClick = navigateToItemUpdate
+
         )
     }
 }
@@ -91,13 +91,20 @@ fun HomeBody(
     modifier: Modifier = Modifier,
     onSiswaClick: (Int) -> Unit
 ){
-    when(statusUISiswa){
-        is StatusUiSiswa.Loading -> LoadingScreen()
-        is StatusUiSiswa.Success -> DaftarSiswa(itemSiswa = statusUISiswa.siswa,
-            onItemClick = { onSiswaClick(it.id) })
-        is StatusUiSiswa.Error -> ErrorScreen(
-            retryAction,
-            modifier = modifier.fillMaxSize())
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        when(statusUISiswa) {
+            is StatusUiSiswa.Loading -> LoadingScreen()
+            is StatusUiSiswa.Success -> DaftarSiswa(
+                itemSiswa = statusUISiswa.siswa,
+                onSiswaClick = { onSiswaClick(it.id) })
+            is StatusUiSiswa.Error -> ErrorScreen(
+                retryAction,
+                modifier = modifier.fillMaxSize()
+            )
+        }
     }
 }
 
@@ -129,26 +136,23 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 fun DaftarSiswa(
     itemSiswa: List<DataSiswa>,
     modifier: Modifier = Modifier,
-    onItemClick: (DataSiswa) -> Unit
+    onSiswaClick: (DataSiswa) -> Unit
 ){
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        items(items = itemSiswa, key = { it.id }) { person ->
-            SiswaCard(
+    LazyColumn(modifier = modifier){
+        items(items = itemSiswa, key = {it.id}){
+            person ->
+            ItemSiswa(
                 siswa = person,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onItemClick(person) }
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .clickable { onSiswaClick(person) }
             )
         }
     }
 }
 
 @Composable
-fun SiswaCard(
+fun ItemSiswa(
     siswa: DataSiswa,
     modifier: Modifier = Modifier
 ){
@@ -186,3 +190,4 @@ fun SiswaCard(
         }
     }
 }
+
