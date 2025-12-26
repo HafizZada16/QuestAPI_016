@@ -11,15 +11,17 @@ import com.example.questapi_016.modeldata.UIStateSiswa
 import com.example.questapi_016.modeldata.toDataSiswa
 import com.example.questapi_016.modeldata.toUiStateSiswa
 import com.example.questapi_016.repositori.RepositoryDataSiswa
+import com.example.questapi_016.uicontroller.route.DestinasiDetail
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import kotlin.checkNotNull
 
 
 class EditViewModel(savedStateHandle: SavedStateHandle, private val repositoryDataSiswa: RepositoryDataSiswa) : ViewModel() {
     var uiStateSiswa by mutableStateOf(UIStateSiswa())
         private set
 
-    private val idSiswa: Int = checkNotNull(savedStateHandle[DestinasiDetail.idSiswaArg])
+    private val idSiswa: Int = checkNotNull(savedStateHandle[DestinasiDetail.itemIdArg])
 
     init {
         viewModelScope.launch {
@@ -32,7 +34,7 @@ class EditViewModel(savedStateHandle: SavedStateHandle, private val repositoryDa
             UIStateSiswa(detailSiswa = detailSiswa, isEntryValid = validasiInput(detailSiswa))
     }
     private fun validasiInput(uiState: DetailSiswa = uiStateSiswa.detailSiswa): Boolean {
-        return with(uiStateSiswa) {
+        return with(uiState) {
             nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
         }
     }
