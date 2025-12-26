@@ -31,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.questapi_016.R
@@ -42,7 +41,6 @@ import com.example.questapi_016.viewmodel.StatusUIDetail
 import com.example.questapi_016.viewmodel.provider.PenyediaViewModel
 import kotlinx.coroutines.launch
 
-private val Any.id: Int
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,8 +62,8 @@ fun DetailSiswaScreen(
             val uiState = viewModel.statusUIDetail
             FloatingActionButton(
                 onClick = {
-                    when (uiState) {
-                        is StatusUIDetail.Success -> navigateToEditItem(uiState.satusiswa.id) else -> {}}
+                    when(uiState){ is StatusUIDetail.Success ->
+                            navigateToEditItem(uiState.SatuSiswa.id) else -> {}}
                 },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
@@ -105,10 +103,10 @@ private fun BodyDetailDataSiswa(
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         when (statusUIDetail) {
-            is StatusUIDetail.Success -> DetailDataSiswa({
-                siswa = statusUIDetail.satusiswa
-                modifier = Modifier.fillMaxWidth()
-            })
+            is StatusUIDetail.Success -> DetailDataSiswa(
+                siswa = statusUIDetail.SatuSiswa,
+                modifier = Modifier.fillMaxWidth())
+            else -> {}
 
         }
         OutlinedButton(
