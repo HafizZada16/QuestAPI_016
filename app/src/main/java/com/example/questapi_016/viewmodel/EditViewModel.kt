@@ -12,7 +12,8 @@ import com.example.questapi_016.modeldata.toUiStateSiswa
 import com.example.questapi_016.repositori.RepositoryDataSiswa
 import kotlinx.coroutines.launch
 
-class EditViewModel(savedStateHandle: SavedStateHandle,private val repositoryDataSiswa: RepositoryDataSiswa) : ViewModel() {
+
+class EditViewModel(savedStateHandle: SavedStateHandle, private val repositoryDataSiswa: RepositoryDataSiswa) : ViewModel() {
     var uiStateSiswa by mutableStateOf(UIStateSiswa())
         private set
 
@@ -28,6 +29,12 @@ class EditViewModel(savedStateHandle: SavedStateHandle,private val repositoryDat
         uiStateSiswa =
             UIStateSiswa(detailSiswa = detailSiswa, isEntryValid = validasiInput(detailSiswa))
     }
+    private fun validasiInput(uiState: DetailSiswa = uiStateSiswa.detailSiswa): Boolean {
+        return with(uiStateSiswa) {
+            nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
+        }
+    }
+    suspend fun editSatuSiswa(){
 
-
+    }
 }
