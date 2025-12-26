@@ -63,7 +63,7 @@ fun DetailSiswaScreen(
             FloatingActionButton(
                 onClick = {
                     when(uiState){ is StatusUIDetail.Success ->
-                            navigateToEditItem(uiState.SatuSiswa.id) else -> {}}
+                            navigateToEditItem(uiState.satusiswa.id) else -> {}}
                 },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
@@ -104,7 +104,7 @@ private fun BodyDetailDataSiswa(
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         when (statusUIDetail) {
             is StatusUIDetail.Success -> DetailDataSiswa(
-                siswa = statusUIDetail.SatuSiswa,
+                siswa = statusUIDetail.satusiswa,
                 modifier = Modifier.fillMaxWidth())
             else -> {}
 
