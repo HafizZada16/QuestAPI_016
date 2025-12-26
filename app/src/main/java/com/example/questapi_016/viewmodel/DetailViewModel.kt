@@ -7,9 +7,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.serialization.InternalSerializationApi
 import com.example.questapi_016.modeldata.DataSiswa
 import com.example.questapi_016.repositori.RepositoryDataSiswa
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 sealed interface StatusUIDetail {
     data class Success(val SatuSiswa: DataSiswa) : StatusUIDetail
@@ -22,7 +26,22 @@ class DetailViewModel(savedStateHandle: SavedStateHandle, private val repository
         private set
 
     init {
-        getDataSiswa()
+        getSatuSiswa()
+    }
+
+    fun getSatuSiswa(){
+        viewModelScope.launch {
+            statusUIDetail = StatusUIDetail.Loading
+            statusUIDetail = try {
+                StatusUIDetail.Success(satusiswa = repositoryDataSiswa.getSatuSiswa(idSiswa))
+            }
+            catch (e: IOException){
+                StatusUIDetail.Error
+            }
+            catch (e: HttpException){
+                StatusUIDetail.Error
+            }
+        }
     }
 
 }
