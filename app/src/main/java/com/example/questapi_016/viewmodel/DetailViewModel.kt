@@ -2,6 +2,7 @@
 
 package com.example.questapi_016.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,6 +14,7 @@ import com.example.questapi_016.modeldata.DataSiswa
 import com.example.questapi_016.repositori.RepositoryDataSiswa
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 
 sealed interface StatusUIDetail {
@@ -44,4 +46,5 @@ class DetailViewModel(savedStateHandle: SavedStateHandle, private val repository
         }
     }
 
+    
 }
