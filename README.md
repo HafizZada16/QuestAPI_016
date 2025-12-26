@@ -12,4 +12,5 @@ Tampilan Home setelah Input :
 
 
 Part 2
+
 <img width="440" height="934" alt="image" src="https://github.com/user-attachments/assets/3cc459b4-6dc3-49b8-babf-b024d0c0dcb8" />
